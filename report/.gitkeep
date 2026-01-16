@@ -1,1 +1,38 @@
-placeholder
+# DNS Triage Report (Wireshark)
+
+## Summary
+Captured DNS traffic and documented a repeatable triage workflow to separate queries vs responses and identify NXDOMAIN responses.
+
+## Environment
+- OS: Linux
+- Tool: Wireshark
+
+## Steps performed
+1. Start capture on active interface
+2. Generate DNS activity
+3. Isolate DNS with display filters
+4. Separate queries vs responses
+5. Identify NXDOMAIN responses
+6. Capture sanitized evidence screenshots
+
+## Filters used
+- `dns`
+- `dns and udp.port == 53`
+- `dns.flags.response == 0` (queries)
+- `dns.flags.response == 1` (responses)
+- `dns.flags.rcode == 3` (NXDOMAIN)
+
+## Findings (sanitized)
+- Observed standard A/AAAA DNS traffic and normal response patterns
+- Confirmed NXDOMAIN responses via `rcode == 3`
+- Verified query/response separation via `dns.flags.response`
+
+## Interpretation
+- NXDOMAIN indicates the requested name does not exist in DNS.
+- `dns.flags.response` reliably separates queries (0) from responses (1).
+
+## Evidence
+See `evidence/screenshots/` (sanitized).
+
+## Sanitization
+Excluded/removed IPs, MACs, hostnames/device names, and local discovery traffic (mDNS).
